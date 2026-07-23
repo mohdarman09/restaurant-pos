@@ -3,8 +3,10 @@ import { store } from '../app/store';
 import { setAccessToken, logout } from '../features/auth/authSlice';
 
 export const apiClient = axios.create({
-  baseURL: '/api',
-  headers: { 'Content-Type': 'application/json' },
+  baseURL: import.meta.env.VITE_API_URL || '/api',
+  headers: {
+    'Content-Type': 'application/json',
+  },
 });
 
 apiClient.interceptors.request.use((config: InternalAxiosRequestConfig) => {
