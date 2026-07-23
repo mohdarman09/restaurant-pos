@@ -1,0 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html, body, #root { height: 100%; }
+  body { -webkit-font-smoothing: antialiased; }
+  h1, h2, h3, .font-display { letter-spacing: 0.01em; }
+}
+
+@layer components {
+  /* Signature element: a kitchen-chit card with a torn/perforated top edge,
+     used for order tickets across POS, KDS, and order history. */
+  .ticket {
+    position: relative;
+    background: theme('colors.paper.card');
+    border-radius: theme('borderRadius.ticket');
+    box-shadow: theme('boxShadow.ticket');
+  }
+  .ticket::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: 12px;
+    right: 12px;
+    height: 6px;
+    background-image: radial-gradient(circle at 6px 0px, transparent 3px, theme('colors.paper.card') 3.5px);
+    background-size: 12px 6px;
+    background-repeat: repeat-x;
+  }
+
+  .status-dot { width: 8px; height: 8px; border-radius: 9999px; display: inline-block; }
+}
+
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-thumb { background: theme('colors.ink.faint'); border-radius: 9999px; }
+::-webkit-scrollbar-track { background: transparent; }
