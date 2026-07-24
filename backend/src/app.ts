@@ -24,7 +24,31 @@ import notificationRoutes from './routes/notification.routes';
 export const app = express();
 
 app.use(helmet());
-app.use(cors({ origin: env.corsOrigin, credentials: true }));
+
+import cors from 'cors';
+
+// `.env` se comma separated origins padho aur trim kar do
+const origins = (process.env.CORS_ORIGIN || '')
+  .split(',')
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      // Postman ya direct server-to-server calls ke liye (no origin)
+      if (!origin) return callback(null, true);
+
+      if (origins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    credentials: true,
+  })
+);
+
 app.use(compression());
 app.use(express.json({ limit: '2mb' }));
 app.use(morgan(env.nodeEnv === 'development' ? 'dev' : 'combined'));
