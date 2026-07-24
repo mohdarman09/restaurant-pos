@@ -23,6 +23,9 @@ import notificationRoutes from './routes/notification.routes';
 
 export const app = express();
 
+// Enable proxy trust for Render deployment
+app.set('trust proxy', 1);
+
 app.use(helmet());
 
 // Allowed origins for cross-origin requests
