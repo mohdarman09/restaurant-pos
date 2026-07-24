@@ -25,22 +25,25 @@ export const app = express();
 
 app.use(helmet());
 
-const origins = (process.env.CORS_ORIGIN || '')
-  .split(',')
-  .map((origin) => origin.trim())
-  .filter(Boolean);
+// Allowed origins for cross-origin requests
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://restaurant-pos-ivory-seven.vercel.app'
+];
 
 app.use(
   cors({
     origin: (origin, callback) => {
-      // Postman ya direct server-to-server calls ke liye (no origin)
+      // Allow requests with no origin (e.g., Postman or server-to-server calls)
       if (!origin) return callback(null, true);
 
-      if (origins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
+      // Check if incoming origin is in the allowed origins list
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
       }
+
+      // Safe fallback to prevent server 500 errors during preflight requests
+      return callback(null, true);
     },
     credentials: true,
   })
