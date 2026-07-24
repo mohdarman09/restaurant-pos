@@ -25,9 +25,6 @@ export const app = express();
 
 app.use(helmet());
 
-import cors from 'cors';
-
-// `.env` se comma separated origins padho aur trim kar do
 const origins = (process.env.CORS_ORIGIN || '')
   .split(',')
   .map((origin) => origin.trim())
