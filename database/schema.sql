@@ -50,7 +50,7 @@ BEGIN
 
   IF TG_OP = 'INSERT' THEN
     INSERT INTO audit_logs(table_name, record_id, action, new_data, changed_by)
-    VALUES (TG_TABLE_NAME, NEW.id, 'INSERT', NULL, to_jsonb(NEW), actor);
+    VALUES (TG_TABLE_NAME, NEW.id, 'INSERT', to_jsonb(NEW), actor);
     RETURN NEW;
   ELSIF TG_OP = 'UPDATE' THEN
     INSERT INTO audit_logs(table_name, record_id, action, old_data, new_data, changed_by)
